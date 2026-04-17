@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSG Transport LLC — Email Signature Generator</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f5f7fa;}
+  .container{max-width:780px;margin:0 auto;}
+  .header{background:#015A96;border-radius:10px;padding:14px 20px;margin-bottom:14px;text-align:center;}
+  .header h1{font-size:17px;font-weight:700;color:#fff;margin:0 0 3px;}
+  .header p{font-size:11px;color:#00B3CA;margin:0;font-weight:600;}
+  .domain-row{display:flex;gap:0;margin-bottom:14px;border:2px solid #015A96;border-radius:8px;overflow:hidden;}
+  .d-btn{flex:1;padding:10px 6px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#fff;color:#015A96;text-align:center;transition:all 0.15s;}
+  .d-btn.on{background:#015A96;color:#fff;}
+  .d-btn:first-child{border-right:2px solid #015A96;}
+  .d-btn small{font-size:9px;font-weight:600;display:block;margin-top:2px;opacity:0.8;}
+  .form-section{background:#f0f4f8;border:1px solid #dce8f0;border-radius:10px;padding:16px;margin-bottom:14px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .form-col{display:flex;flex-direction:column;gap:8px;}
+  .panel-head{font-size:11px;font-weight:700;color:#015A96;text-transform:uppercase;letter-spacing:0.5px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #00B3CA;}
+  .field{display:flex;flex-direction:column;gap:3px;}
+  .field label{font-size:10px;font-weight:700;color:#015A96;text-transform:uppercase;letter-spacing:0.5px;}
+  .field input{padding:8px 10px;border:1.5px solid #00B3CA;border-radius:6px;font-size:12px;font-weight:600;color:#222;font-family:Arial,sans-serif;outline:none;background:#fff;transition:border-color 0.15s;}
+  .field input:focus{border-color:#015A96;}
+  .field input::placeholder{color:#bbb;font-weight:400;}
+  .phone-wrap{display:flex;border:1.5px solid #00B3CA;border-radius:6px;overflow:hidden;}
+  .phone-pre{background:#015A96;padding:8px 10px;font-size:11px;color:#fff;font-weight:700;}
+  .phone-wrap input{flex:1;padding:8px 10px;border:none;font-size:12px;font-weight:600;color:#222;font-family:Arial,sans-serif;outline:none;}
+  .email-wrap{display:flex;border:1.5px solid #015A96;border-radius:6px;overflow:hidden;}
+  .email-wrap input{flex:1;padding:8px 10px;border:none;font-size:12px;font-weight:600;color:#222;font-family:Arial,sans-serif;outline:none;}
+  .email-at{background:#015A96;padding:8px 7px;font-size:11px;color:#fff;font-weight:700;}
+  .email-dl{background:#E6F4F8;padding:8px 9px;font-size:10px;color:#015A96;font-weight:700;white-space:nowrap;}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;background:#E6F4F8;border:1px solid #00B3CA;border-radius:6px;padding:8px 10px;margin-bottom:5px;transition:opacity 0.2s;}
+  .toggle-row.locked{background:#f0f0f0;border-color:#ccc;opacity:0.5;cursor:not-allowed;}
+  .toggle-label{font-size:10px;font-weight:700;color:#015A96;}
+  .toggle-row.locked .toggle-label{color:#999;}
+  .toggle-sub{font-size:9px;color:#333;font-weight:600;margin-top:1px;}
+  .lock-badge{font-size:8px;background:#ccc;color:#666;border-radius:4px;padding:1px 4px;margin-left:3px;font-weight:700;}
+  .switch{position:relative;width:38px;height:21px;flex-shrink:0;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:21px;transition:.3s;}
+  .slider:before{position:absolute;content:"";height:15px;width:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+  input:checked+.slider{background:#015A96;}
+  input:checked+.slider:before{transform:translateX(17px);}
+  .toggle-row.locked .slider{cursor:not-allowed;background:#ccc !important;}
+  .hint{font-size:9px;color:#999;font-style:italic;margin:2px 0 0;}
+  .tgl-label{font-size:10px;font-weight:700;color:#015A96;text-transform:uppercase;letter-spacing:0.5px;margin:8px 0 6px;}
+  .preview-section{background:#fff;border:1px solid #dce8f0;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+  .preview-label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+  .preview-scaler{width:100%;overflow:hidden;}
+  .btn-row{display:flex;gap:8px;margin-top:10px;}
+  .btn-primary{flex:1;padding:11px;border-radius:6px;border:none;background:#015A96;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s;}
+  .btn-primary:hover{background:#2B4CC8;}
+  .btn-primary:active{transform:scale(0.98);}
+  .btn-secondary{flex:1;padding:11px;border-radius:6px;border:2px solid #015A96;background:#fff;color:#015A96;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;}
+  .btn-secondary:hover{background:#E6F4F8;}
+  .copied-msg{font-size:11px;font-weight:700;color:#2D7A2D;text-align:center;margin-top:6px;display:none;}
+  .reply-box{background:#E6F4F8;border:1.5px solid #00B3CA;border-radius:8px;padding:11px 14px;margin-bottom:8px;}
+  .section-title{font-size:11px;font-weight:700;color:#015A96;margin:12px 0 8px;padding-bottom:5px;border-bottom:1.5px solid #00B3CA;}
+  .setup-toggle-btn{width:100%;padding:13px 18px;border-radius:8px;border:2px solid #015A96;background:#fff;color:#015A96;font-size:13px;font-weight:700;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s;margin-bottom:0;}
+  .setup-toggle-btn:hover{background:#E6F4F8;}
+  .setup-toggle-btn.open{background:#015A96;color:#fff;border-radius:8px 8px 0 0;}
+  .setup-toggle-btn .arrow{font-size:14px;transition:transform 0.2s;}
+  .setup-toggle-btn.open .arrow{transform:rotate(180deg);}
+  .setup-guide{display:none;background:#fff;border:2px solid #015A96;border-top:none;border-radius:0 0 8px 8px;padding:20px;margin-bottom:14px;}
+  .setup-guide.open{display:block;}
+  .setup-step{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
+  .step-num{width:28px;height:28px;border-radius:50%;background:#015A96;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-title{font-size:13px;font-weight:700;color:#015A96;margin:0 0 4px;}
+  .step-desc{font-size:12px;color:#333;font-weight:500;margin:0;line-height:1.8;}
+  .step-desc b{color:#015A96;}
+  .step-note{background:#FFF8E6;border:1px solid #FAC775;border-radius:6px;padding:6px 10px;font-size:11px;color:#7A5000;font-weight:700;margin-top:6px;}
+  .step-green{background:#EAF3DE;border:1px solid #97C459;border-radius:6px;padding:6px 10px;font-size:11px;color:#2D7A2D;font-weight:700;margin-top:6px;}
+  .step-divider{background:#E6F4F8;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;color:#015A96;margin:14px 0 10px;letter-spacing:0.3px;}
+  @media(max-width:600px){.form-grid{grid-template-columns:1fr 1fr;}body{padding:12px;}}
+  @media(max-width:400px){.form-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>DSG Transport LLC</h1>
+    <p>Email Signature Generator — fill in your details below</p>
+  </div>
+
+  <div class="domain-row">
+    <button class="d-btn on" onclick="switchD('main',this)">@dsgtransport.com<small>Main domain</small></button>
+    <button class="d-btn" onclick="switchD('team',this)">@teamdsgtransport.com<small>Team domain</small></button>
+  </div>
+
+  <div class="form-section">
+    <p class="panel-head">Your details</p>
+    <div class="form-grid">
+      <div class="form-col">
+        <div class="field"><label>Full Name</label><input id="m-name" placeholder="e.g. John Smith" oninput="up()"><span class="hint">Auto Title Case</span></div>
+        <div class="field"><label>Job Title</label><input id="m-title" placeholder="e.g. CEO or Logistics Coordinator" oninput="up()"><span class="hint">Always shown on same line as name</span></div>
+        <div class="field"><label>Your Email</label>
+          <div class="email-wrap"><input id="m-local" placeholder="your.name" oninput="up()"><span class="email-at">@</span><span class="email-dl" id="m-domain-label">dsgtransport.com</span></div>
+          <span class="hint">Type your email prefix — auto lowercase</span>
+        </div>
+      </div>
+      <div class="form-col">
+        <div class="field"><label>US Phone Number</label>
+          <div class="phone-wrap"><span class="phone-pre">+1</span><input id="m-phone" placeholder="(253) 361-1828" oninput="up()" maxlength="14"></div>
+        </div>
+        <div class="field"><label>Extension (optional)</label><input id="m-ext" placeholder="e.g. 102" oninput="up()"></div>
+      </div>
+      <div class="form-col">
+        <p class="tgl-label" style="margin-top:0;">Optional</p>
+        <div class="toggle-row locked">
+          <div><div class="toggle-label" id="tog-same-label">info@dsgtransport.com <span class="lock-badge">🔒</span></div><div class="toggle-sub">Same domain — locked</div></div>
+          <label class="switch"><input type="checkbox" disabled><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label" id="tog-other-label">info@teamdsgtransport.com</div><div class="toggle-sub">Add second email below yours</div></div>
+          <label class="switch"><input type="checkbox" id="m-ti-other" onchange="up()"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-label">Services line</div><div class="toggle-sub">Intermodal | Dedicated | Truckload | LTL...</div></div>
+          <label class="switch"><input type="checkbox" id="m-ts" onchange="up()"><span class="slider"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-section">
+    <p class="preview-label">Live preview — your signature</p>
+    <div class="preview-scaler"><div id="sig-preview-wrap"><div id="sig-preview"></div></div></div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="copySig()">Copy Signature</button>
+      <button class="btn-secondary" onclick="copyHTML()">Copy HTML</button>
+    </div>
+    <p class="copied-msg" id="copy-msg">Copied! Paste directly into Gmail signature box.</p>
+    <p class="copied-msg" id="html-msg">HTML copied!</p>
+  </div>
+
+  <div class="preview-section">
+    <p class="section-title">Reply signature</p>
+    <div class="reply-box"><p style="margin:0;font-size:13px;font-weight:700;color:#000;font-family:Arial,sans-serif;" id="reply-preview">Your Name · Your Title</p></div>
+    <div class="btn-row"><button class="btn-primary" onclick="copyReply()">Copy Reply Signature</button></div>
+    <p class="copied-msg" id="reply-msg">Copied! Paste into Gmail reply signature box.</p>
+  </div>
+
+  <button class="setup-toggle-btn" id="setup-btn" onclick="toggleSetup()">
+    <span>How to set up your signature in Gmail</span>
+    <span class="arrow">▼</span>
+  </button>
+  <div class="setup-guide" id="setup-guide">
+    <div class="step-divider">STEP 1 — Copy your new email signature</div>
+    <div class="setup-step"><div class="step-num">1</div><div><p class="step-title">Fill in your details and copy</p><p class="step-desc">Fill in your name, title, email and phone above → click <b>Copy Signature</b> button.</p></div></div>
+    <div class="step-divider">STEP 2 — Open Gmail signature settings</div>
+    <div class="setup-step"><div class="step-num">2</div><div><p class="step-title">Go to Gmail settings</p><p class="step-desc">Open Gmail → click the <b>⚙ gear icon</b> (top right) → click <b>See all settings</b> → click the <b>General</b> tab → scroll down to the <b>Signature</b> section.</p></div></div>
+    <div class="step-divider">STEP 3 — Create your new email signature</div>
+    <div class="setup-step"><div class="step-num">3</div><div><p class="step-title">Create DSG New Email signature</p><p class="step-desc">Click <b>Create new</b> → name it <b>DSG New Email</b> → click <b>Create</b> → click inside the signature box on the right → select all existing text (<b>Ctrl+A</b>) and delete → press <b>Ctrl+V</b> to paste your copied signature.<div class="step-note">If the logo does not appear immediately — click Save Changes first, then reopen settings. Gmail sometimes delays image rendering.</div></p></div></div>
+    <div class="step-divider">STEP 4 — Create your reply signature</div>
+    <div class="setup-step"><div class="step-num">4</div><div><p class="step-title">Create DSG Reply signature</p><p class="step-desc">Click <b>Create new</b> again → name it <b>DSG Reply</b> → click <b>Create</b> → go back to the generator above → click <b>Copy Reply Signature</b> → click inside the DSG Reply box → press <b>Ctrl+V</b> to paste.</p></div></div>
+    <div class="step-divider">STEP 5 — Set signature defaults</div>
+    <div class="setup-step"><div class="step-num">5</div><div><p class="step-title">Choose which signature appears where</p><p class="step-desc">Scroll to <b>Signature defaults</b>:<br>— <b>For new emails use</b> → select <b>DSG New Email</b><br>— <b>On reply/forward use</b> → select <b>DSG Reply</b></p></div></div>
+    <div class="step-divider">STEP 6 — Save</div>
+    <div class="setup-step"><div class="step-num">6</div><div><p class="step-title">Save your settings</p><p class="step-desc">Scroll to the very bottom of the Settings page → click <b>Save Changes</b>.<div class="step-green">Done! Send a test email to yourself to confirm your signature looks correct before emailing clients.</div></p></div></div>
+  </div>
+
+</div>
+<div id="html-store" style="display:none;"></div>
+
+<script>
+const LOGO='https://raw.githubusercontent.com/DSG8453/dsg-logo-/main/dsg_logo_transparent.png';
+const SVC='Intermodal &nbsp;|&nbsp; Dedicated &nbsp;|&nbsp; Truckload &nbsp;|&nbsp; LTL &nbsp;|&nbsp; Refrigerated &nbsp;|&nbsp; Flatbed &nbsp;|&nbsp; Cross-Dock';
+const RB='#2B4CC8';const NV='#015A96';const CY='#00B3CA';const DG='#555555';const LR='#C0392B';
+let currentDomain='main';
+
+function buildSig(name,title,email,phone,ext,secondEmail,ss){
+  const sep='&nbsp;&nbsp;|&nbsp;&nbsp;';
+  const extStr=ext?` ext. ${ext}`:'';
+  const nameLine=`<p style="margin:0 0 1px;font-family:Arial,sans-serif;font-size:17px;font-weight:700;color:#000000;line-height:1.4;mso-line-height-rule:exactly;">${name} <span style="font-size:13px;color:${NV};font-weight:700;">· ${title}</span></p>`;
+  const svcLine=ss?`<p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:11px;color:${LR};font-weight:600;">${SVC}</p>`:'';
+  const secondRow=secondEmail?`<tr><td style="font-size:13px;font-weight:700;color:#000000;font-family:Arial,sans-serif;vertical-align:top;white-space:nowrap;padding-right:6px;width:16px;">:</td><td style="font-size:13px;font-weight:600;color:${RB};font-family:Arial,sans-serif;line-height:1.7;">${secondEmail}</td></tr>`:'';
+  return `<table cellpadding="0" cellspacing="0" border="0" style="width:600px;min-width:600px;max-width:600px;font-family:Arial,sans-serif;border-collapse:collapse;table-layout:fixed;-webkit-text-size-adjust:none;text-size-adjust:none;">
+  <tr>
+    <td style="width:105px;min-width:105px;max-width:105px;padding:0 16px 0 0;vertical-align:middle;">
+      <img src="${LOGO}" width="90" height="auto" alt="DSG Transport LLC" style="display:block;width:90px;height:auto;border:0;outline:none;">
+    </td>
+    <td style="padding:0 0 0 16px;vertical-align:middle;border-left:1.5px solid ${CY};">
+      ${nameLine}${svcLine}
+      <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr><td style="font-size:13px;font-weight:700;color:#000000;font-family:Arial,sans-serif;vertical-align:top;white-space:nowrap;padding-right:6px;width:16px;">E:</td><td style="font-size:13px;font-weight:600;color:${RB};font-family:Arial,sans-serif;line-height:1.7;">${email}</td></tr>
+        ${secondRow}
+        ${phone?`<tr><td style="font-size:13px;font-weight:700;color:#000000;font-family:Arial,sans-serif;vertical-align:top;white-space:nowrap;padding-right:6px;width:16px;">P:</td><td style="font-size:13px;font-weight:600;color:${DG};font-family:Arial,sans-serif;line-height:1.7;">+1 ${phone}${extStr}</td></tr>`:''}
+        <tr><td colspan="2" style="font-size:12px;color:${DG};font-weight:600;font-family:Arial,sans-serif;padding-top:2px;">MC#: 1106995${sep}DOT#: 3422986</td></tr>
+      </table>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="padding:10px 0 0 0;">
+    <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td style="border-top:1px solid ${CY};font-size:0;line-height:0;">&nbsp;</td></tr></table>
+    <p style="margin:7px 0 3px 0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">DSG Transport LLC is a Freight Broker, and all shippers, customers, motor carriers, and other entities utilizing our services as a Freight Broker are subject to DSG Transport LLC&#39;s Terms and Conditions: <a href="https://www.dsgtransport.com" style="color:${RB};font-weight:600;text-decoration:underline;font-size:11px;font-family:Arial,sans-serif;">www.dsgtransport.com</a></p>
+    <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">Emails from <span style="color:${RB};font-weight:600;font-family:Arial,sans-serif;font-size:11px;">@dsgtransport.com</span> &amp; <span style="color:${RB};font-weight:600;font-family:Arial,sans-serif;font-size:11px;">@teamdsgtransport.com</span>, <span style="color:#444444;font-style:normal;font-weight:700;font-family:Arial,sans-serif;font-size:11px;">including professional aliases,</span> are sent on behalf of DSG Transport LLC &middot; Main Office: 13726 107th Ave Ct E, Puyallup, WA 98374 &middot; <span style="color:${RB};font-style:normal;font-weight:700;font-family:Arial,sans-serif;font-size:12px;">&#9990;</span> <span style="color:#666666;font-style:italic;font-family:Arial,sans-serif;font-size:11px;">(253) 320-5093</span></p>
+  </td></tr>
+</table>`;
+}
+
+function v(id){return document.getElementById(id).value.trim();}
+function t(id){return document.getElementById(id).checked;}
+function toTC(s){if(!s)return s;return s.split(' ').map(w=>{if(w===w.toUpperCase()&&w.length<=4)return w;return w.charAt(0).toUpperCase()+w.slice(1).toLowerCase();}).join(' ');}
+function fmtPhone(r){const d=r.replace(/\D/g,'').slice(0,10);if(!d.length)return '';if(d.length<=3)return `(${d}`;if(d.length<=6)return `(${d.slice(0,3)}) ${d.slice(3)}`;return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;}
+
+function up(){
+  const nm=toTC(v('m-name'))||'Your Name';
+  const ti=toTC(v('m-title'))||'Your Title';
+  const lo=v('m-local').toLowerCase();
+  const ph=fmtPhone(v('m-phone'));
+  const ex=v('m-ext');
+  const ss=t('m-ts');
+  const suffix=currentDomain==='main'?'@dsgtransport.com':'@teamdsgtransport.com';
+  const em=lo?`${lo}${suffix}`:`your.name${suffix}`;
+  const second=t('m-ti-other')?(currentDomain==='main'?'info@teamdsgtransport.com':'info@dsgtransport.com'):'';
+  const html=buildSig(nm,ti,em,ph,ex,second,ss);
+  document.getElementById('sig-preview').innerHTML=html;
+  document.getElementById('html-store').innerHTML=html;
+  document.getElementById('reply-preview').innerHTML=`${nm} &nbsp;&middot;&nbsp; <span style="color:${RB};">${ti}</span>`;
+  scalePreview();
+}
+
+function scalePreview(){
+  const wrap=document.getElementById('sig-preview-wrap');
+  const container=wrap.parentElement;
+  const cw=container.clientWidth-2;
+  if(cw<600){const scale=cw/600;wrap.style.transform=`scale(${scale})`;wrap.style.transformOrigin='top left';wrap.style.width='600px';container.style.height=Math.round(wrap.scrollHeight*scale)+'px';}
+  else{wrap.style.transform='';wrap.style.width='';container.style.height='';}
+}
+
+function switchD(d,btn){
+  currentDomain=d;
+  document.getElementById('m-domain-label').textContent=d==='main'?'dsgtransport.com':'teamdsgtransport.com';
+  document.getElementById('m-domain-label').style.fontSize=d==='main'?'11px':'10px';
+  document.getElementById('tog-same-label').innerHTML=d==='main'?'info@dsgtransport.com <span class="lock-badge">🔒</span>':'info@teamdsgtransport.com <span class="lock-badge">🔒</span>';
+  document.getElementById('tog-other-label').textContent=d==='main'?'info@teamdsgtransport.com':'info@dsgtransport.com';
+  document.getElementById('m-ti-other').checked=false;
+  document.querySelectorAll('.d-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  up();
+}
+
+function toggleSetup(){document.getElementById('setup-btn').classList.toggle('open');document.getElementById('setup-guide').classList.toggle('open');}
+function showMsg(id){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
+function copySig(){const el=document.getElementById('sig-preview-wrap');const range=document.createRange();range.selectNode(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.execCommand('copy');sel.removeAllRanges();showMsg('copy-msg');}
+function copyHTML(){navigator.clipboard.writeText(document.getElementById('html-store').innerHTML).then(()=>showMsg('html-msg'));}
+function copyReply(){const el=document.getElementById('reply-preview');const range=document.createRange();range.selectNode(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.execCommand('copy');sel.removeAllRanges();showMsg('reply-msg');}
+
+window.addEventListener('resize',scalePreview);
+up();
+</script>
+</body>
+</html>

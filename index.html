@@ -275,7 +275,23 @@ function switchD(d,btn){
 
 function toggleSetup(){document.getElementById('setup-btn').classList.toggle('open');document.getElementById('setup-guide').classList.toggle('open');}
 function showMsg(id){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
-function copySig(){const el=document.getElementById('sig-preview-wrap');const range=document.createRange();range.selectNode(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.execCommand('copy');sel.removeAllRanges();showMsg('copy-msg');}
+function copySig(){
+  const el=document.getElementById('sig-preview-wrap');
+  // Temporarily enable selection for copy
+  el.style.userSelect='text';
+  el.style.webkitUserSelect='text';
+  const range=document.createRange();
+  range.selectNode(el);
+  const sel=window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  document.execCommand('copy');
+  sel.removeAllRanges();
+  // Re-disable selection
+  el.style.userSelect='none';
+  el.style.webkitUserSelect='none';
+  showMsg('copy-msg');
+}
 function copyHTML(){navigator.clipboard.writeText(document.getElementById('html-store').innerHTML).then(()=>showMsg('html-msg'));}
 function copyReply(){const el=document.getElementById('reply-preview');const range=document.createRange();range.selectNode(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.execCommand('copy');sel.removeAllRanges();showMsg('reply-msg');}
 

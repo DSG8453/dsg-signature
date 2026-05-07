@@ -76,10 +76,35 @@
   .step-divider{background:#E6F4F8;border-radius:6px;padding:6px 12px;font-size:11px;font-weight:700;color:#015A96;margin:14px 0 10px;letter-spacing:0.3px;}
   @media(max-width:600px){.form-grid{grid-template-columns:1fr 1fr;}body{padding:12px;}}
   @media(max-width:400px){.form-grid{grid-template-columns:1fr;}}
+  .pw-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:#015A96;display:flex;align-items:center;justify-content:center;z-index:9999;}
+  .pw-box{background:#fff;border-radius:16px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
+  .pw-box h2{font-size:18px;font-weight:700;color:#015A96;margin:0 0 6px;}
+  .pw-box p{font-size:12px;color:#666;margin:0 0 20px;}
+  .pw-box input{width:100%;padding:12px 14px;border:2px solid #00B3CA;border-radius:8px;font-size:14px;font-weight:600;color:#222;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;font-family:Arial,sans-serif;}
+  .pw-box input:focus{border-color:#015A96;}
+  .pw-box button{width:100%;padding:12px;border-radius:8px;border:none;background:#015A96;color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+  .pw-box button:hover{background:#2B4CC8;}
+  .pw-error{color:#C0392B;font-size:11px;font-weight:700;margin-top:6px;display:none;}
+  #sig-preview-wrap{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
+  .legal-warning{background:#fff8e6;border:1px solid #FAC775;border-radius:8px;padding:12px 16px;margin-top:14px;text-align:center;}
+  .legal-warning p{font-size:10px;color:#7A5000;font-weight:600;margin:0;line-height:1.7;}
+  .legal-warning span{font-weight:700;color:#C0392B;}
 </style>
 </head>
 <body>
-<div class="container">
+
+<!-- PASSWORD SCREEN -->
+<div class="pw-screen" id="pw-screen">
+  <div class="pw-box">
+    <h2>DSG Transport LLC</h2>
+    <p>Email Signature Generator<br>Authorised Personnel Only</p>
+    <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()">Access Generator</button>
+    <p class="pw-error" id="pw-error">Incorrect password. Please try again.</p>
+  </div>
+</div>
+
+<div class="container" id="main-content" style="display:none;">
 
   <div class="header">
     <h1>DSG Transport LLC</h1>
@@ -131,10 +156,9 @@
     <div class="preview-scaler"><div id="sig-preview-wrap"><div id="sig-preview"></div></div></div>
     <div class="btn-row">
       <button class="btn-primary" onclick="copySig()">Copy Signature</button>
-      <button class="btn-secondary" onclick="copyHTML()">Copy HTML</button>
     </div>
     <p class="copied-msg" id="copy-msg">Copied! Paste directly into Gmail signature box.</p>
-    <p class="copied-msg" id="html-msg">HTML copied!</p>
+    <p class="copied-msg" id="html-msg">HTML copied! (Admin)</p>
   </div>
 
   <div class="preview-section">
@@ -161,6 +185,12 @@
     <div class="setup-step"><div class="step-num">5</div><div><p class="step-title">Choose which signature appears where</p><p class="step-desc">Scroll to <b>Signature defaults</b>:<br>— <b>For new emails use</b> → select <b>DSG New Email</b><br>— <b>On reply/forward use</b> → select <b>DSG Reply</b></p></div></div>
     <div class="step-divider">STEP 6 — Save</div>
     <div class="setup-step"><div class="step-num">6</div><div><p class="step-title">Save your settings</p><p class="step-desc">Scroll to the very bottom of the Settings page → click <b>Save Changes</b>.<div class="step-green">Done! Send a test email to yourself to confirm your signature looks correct before emailing clients.</div></p></div></div>
+  </div>
+
+
+  <!-- LEGAL WARNING -->
+  <div class="legal-warning">
+    <p><span>&#9888; NOTICE:</span> This generator and all signatures, logos and branding produced herein are the exclusive intellectual property of <span>DSG Transport LLC</span> (MC#: 1106995 | DOT#: 3422986). Authorised DSG Transport LLC personnel only. Unauthorised access, use, copying or distribution without prior written consent is strictly prohibited and may result in legal action.</p>
   </div>
 
 </div>
@@ -249,7 +279,29 @@ function copySig(){const el=document.getElementById('sig-preview-wrap');const ra
 function copyHTML(){navigator.clipboard.writeText(document.getElementById('html-store').innerHTML).then(()=>showMsg('html-msg'));}
 function copyReply(){const el=document.getElementById('reply-preview');const range=document.createRange();range.selectNode(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);document.execCommand('copy');sel.removeAllRanges();showMsg('reply-msg');}
 
+
+function checkPw(){
+  const pw=document.getElementById('pw-input').value;
+  if(pw==='DSG2024'){
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('main-content').style.display='block';
+    sessionStorage.setItem('dsg_auth','1');
+  } else {
+    document.getElementById('pw-error').style.display='block';
+    document.getElementById('pw-input').value='';
+  }
+}
+// Auto-unlock if already authenticated this session
+if(sessionStorage.getItem('dsg_auth')==='1'){
+  document.getElementById('pw-screen').style.display='none';
+  document.getElementById('main-content').style.display='block';
+}
+// Disable right click on preview
+document.addEventListener('contextmenu',function(e){
+  if(e.target.closest('#sig-preview-wrap')){e.preventDefault();}
+});
 window.addEventListener('resize',scalePreview);
+window.addEventListener('keydown',function(e){if(e.shiftKey&&e.key==='H'){copyHTML();}});
 up();
 </script>
 </body>

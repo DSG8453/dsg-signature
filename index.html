@@ -186,7 +186,7 @@
 <div id="html-store" style="display:none;"></div>
 
 <script>
-const LOGO='https://raw.githubusercontent.com/DSG8453/dsg-logo-/main/dsg_logo_email.png';
+const LOGO='https://lh3.googleusercontent.com/d/10Yp1pl7JI-wW9oDAafFKjMoULqC8j0B2';
 const SVC='Intermodal &nbsp;|&nbsp; Dedicated &nbsp;|&nbsp; Truckload &nbsp;|&nbsp; LTL &nbsp;|&nbsp; Refrigerated &nbsp;|&nbsp; Flatbed &nbsp;|&nbsp; Cross-Dock';
 const RB='#2B4CC8';const NV='#015A96';const CY='#00B3CA';const DG='#555555';const LR='#C0392B';
 let currentDomain='main';
@@ -214,8 +214,8 @@ function buildSig(name,title,email,phone,ext,secondEmail,ss){
   </tr>
   <tr><td colspan="2" style="padding:10px 0 0 0;">
     <table cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td style="border-top:1px solid ${CY};font-size:0;line-height:0;">&nbsp;</td></tr></table>
-    <p style="margin:7px 0 3px 0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">DSG Transport LLC is a Freight Broker, and all shippers, customers, motor carriers, and other entities utilizing our services as a Freight Broker are subject to DSG Transport LLC&#39;s Terms and Conditions: <a href="https://www.dsgtransport.com" style="color:${RB};font-weight:600;text-decoration:underline;font-size:11px;font-family:Arial,sans-serif;">https://www.dsgtransport.com</a></p>
-    <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">Emails from <span style="color:${RB};font-weight:600;font-family:Arial,sans-serif;font-size:11px;">@dsgtransport.com</span> &amp; <span style="color:${RB};font-weight:600;font-family:Arial,sans-serif;font-size:11px;">@teamdsgtransport.com</span>, <span style="color:#444444;font-style:normal;font-weight:700;font-family:Arial,sans-serif;font-size:11px;">including professional aliases,</span> are sent on behalf of DSG Transport LLC &middot; Main Office: 13726 107th Ave Ct E, Puyallup, WA 98374 &middot; <span style="color:${RB};font-style:normal;font-weight:700;font-family:Arial,sans-serif;font-size:12px;">&#9990;</span> <span style="color:#666666;font-style:italic;font-family:Arial,sans-serif;font-size:11px;">(253) 320-5093</span></p>
+    <p style="margin:7px 0 3px 0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">DSG Transport LLC is a Freight Broker, and all shippers, customers, motor carriers, and other entities utilizing our services as a Freight Broker are subject to DSG Transport LLC&#39;s Terms and Conditions: dsgtransport.com</p>
+    <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666666;font-style:italic;line-height:1.6;mso-line-height-rule:exactly;">Emails from official DSG Transport LLC domains (see website) and authorized aliases | Main Office: 13726 107th Ave Ct E, Puyallup, WA 98374 | P: (253) 320-5093</p>
   </td></tr>
 </table>`;
 }
@@ -238,7 +238,7 @@ function up(){
   const html=buildSig(nm,ti,em,ph,ex,second,ss);
   document.getElementById('sig-preview').innerHTML=html;
   document.getElementById('html-store').innerHTML=html;
-  document.getElementById('reply-preview').innerHTML=`${nm} &nbsp;&middot;&nbsp; <span style="color:${RB};">${ti}</span>`;
+  document.getElementById('reply-preview').innerHTML=`${nm} &nbsp;&middot;&nbsp; <span style="color:${RB};">${ti}</span><br><span style="font-size:12px;font-weight:600;color:#555555;">DSG Transport LLC</span>`;
   scalePreview();
 }
 
